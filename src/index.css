@@ -11,3 +11,49 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#template_container {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.module_container {
+  /* outline: 1px solid #444546; */
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  border-radius: 5px;
+  box-shadow:  13px 13px 24px #181a1f,
+             -13px -13px 24px #383e49;
+}
+
+.module_container button {
+  width: 30%;
+  height: 40px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.input_container {
+  width: 30%;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input_container input {
+  width: 100%;
+  height: 35px;
+  margin: 10px;
+  border-radius: 5px;
+  text-align: center;
+}

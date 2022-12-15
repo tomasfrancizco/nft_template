@@ -6,6 +6,21 @@ import GraceCars from './contracts/GraceCars'
 import USDCProxy from './contracts/USDCProxy'
 import Web3Modal from 'web3modal';
 
+// agregar funciones tipo transferOwnership, grantRole, revokeRole, ponerlas activas o no segun usuario
+
+// contrato arte
+// grantRole
+// revokeRole
+// transferOwnership
+// renounceRole
+// withdrawUsdc ?
+// getCarsOnSale?
+// getCarsSold?
+// explicacion de funciones
+// quitar los 6 ceros de los valores
+// getCarsByUser
+// estilos
+
 
 function App() {
 
@@ -44,7 +59,7 @@ function App() {
         console.log([graceContractInstance, USDCContractInstance])
         console.log({provider})
         document.getElementById('connect_button').style.display = "none"
-        document.getElementById('template_container').style.display = "block"
+        document.getElementById('template_container').style.display = "flex"
       } catch(e) {
         console.error({ e })
       }
@@ -106,58 +121,77 @@ function App() {
         <button id='connect_button' onClick={() => requestAccount()}>CONNECT WALLET</button>
         <div id='template_container' style={{"display": "none"}}>
 
-          <div>
+          <div className='module_container'>
             <button onClick={() => approveUsdc()}>Approve USDC contract</button>
           </div>
 
-          <div>
-            <input onChange={e => setCarNames(e.target.value)} placeholder='name' />
-            <input onChange={e => setCarPrices(e.target.value)} placeholder='price' />
+          <div className='module_container'>
+            <div className='input_container'>
+              <input onChange={e => setCarNames(e.target.value)} placeholder='name' />
+              <input onChange={e => setCarPrices(e.target.value)} placeholder='price' />
+            </div>
             <button onClick={() => putCarsOnSale(carNames, carPrices)}>Put Cars On Sale</button>
           </div>
 
-          <div>
-            <input onChange={e => setCarName(e.target.value)} placeholder='Car Name' />
+          <div className='module_container'>
+            <div className='input_container'>
+              <input onChange={e => setCarName(e.target.value)} placeholder='Car Name' />
+            </div>
             <button onClick={() => buyCarOnChain(carName)} >Buy Car On Chain</button>
           </div>
           
-          <div>
-            <input placeholder='Address' />
-            <input placeholder='Car Name' />
+          <div className='module_container'>
+            <div className='input_container'>
+              <input placeholder='Address' />
+              <input placeholder='Car Name' />
+            </div>
             <button>Buy Car Off Chain</button>
           </div>
 
-          <div>
-            <input placeholder='New price' />
+          <div className='module_container'>
+            <div className='input_container'>
+              <input placeholder='New price' />
+            </div>
             <button>Change Price</button>
           </div>
 
-          <div>
-            <input placeholder='Car name'/>
+          <div className='module_container'>
+            <div className='input_container'>
+              <input placeholder='Car name'/>
+            </div>
+            
             <button>Pause Sale</button>
           </div>
 
-          <div>
-            <input placeholder='Car name'/>
+          <div className='module_container'>
+            <div className='input_container'>
+              <input placeholder='Car name'/>
+            </div>
             <button>Unpause Sale</button>
           </div>
 
-          <div>
-            <input placeholder='New receiver'/>
+          <div className='module_container'>
+            <div className='input_container'>
+              <input placeholder='New receiver'/>
+            </div> 
             <button>Set New Receiver</button>
           </div>
 
-          <div>
-            <input placeholder='New Base URI'/>
+          <div className='module_container'>
+            <div className='input_container'>
+              <input placeholder='New Base URI'/>
+            </div>
             <button>Set New BaseUri</button>
           </div>
 
-          <div>
+          <div className='module_container'>
             <button>Toggle Marketplace Permission</button>
           </div>
 
-          <div>
-            <input placeholder='Address'/>
+          <div className='module_container'>
+            <div className='input_container'>
+              <input placeholder='Address'/>
+            </div>
             <button>Toggle Marketplace Address</button>
           </div>
 
