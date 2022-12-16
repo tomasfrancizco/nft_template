@@ -205,7 +205,12 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
   async function grantRole(role, address) {
     setError("")
-    const bytesRole = ethers.utils.id(role)
+    let bytesRole;
+    if(role !== "DEFAULT_ADMIN_ROLE"){
+      bytesRole = ethers.utils.id(role)
+    } else {
+      bytesRole = "0x0000000000000000000000000000000000000000000000000000000000000000"
+    }
     // contract's function asks for the keccak256 hash of the role's text
     // this is ethers function to compute the keccak256 hash of the text bytes
     try {
@@ -545,7 +550,7 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
         </span>
       </div>
 
-      <div className="module_container">
+      <div style={{ marginBottom: "100px" }} className="module_container">
         <div className="input_container">
           <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
           <input
@@ -564,15 +569,6 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
         </span>
       </div>
 
-      <div style={{ marginBottom: "100px" }} className="module_container">
-        <div className="input_container">
-          <input placeholder="Address" />
-          <button>Transfer Ownership</button>
-        </div>
-        <span className="description">
-          This function is used to transfer the ownership of the contract.
-        </span>
-      </div>
     </div>
   );
 };
