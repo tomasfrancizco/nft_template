@@ -226,7 +226,14 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
   async function revokeRole(role, address) {
     setError("")
-    const bytesRole = ethers.utils.id(role)
+    let bytesRole;
+    if(role !== "DEFAULT_ADMIN_ROLE"){
+      bytesRole = ethers.utils.id(role)
+    } else {
+      bytesRole = "0x0000000000000000000000000000000000000000000000000000000000000000"
+    }
+    // contract's function asks for the keccak256 hash of the role's text
+    // this is ethers function to compute the keccak256 hash of the text bytes
     try {
       const transaction = await carsContract.revokeRole(bytesRole, address)
       await transaction.wait()
@@ -240,7 +247,14 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
   async function renounceRole(role, address) {
     setError("")
-    const bytesRole = ethers.utils.id(role)
+    let bytesRole;
+    if(role !== "DEFAULT_ADMIN_ROLE"){
+      bytesRole = ethers.utils.id(role)
+    } else {
+      bytesRole = "0x0000000000000000000000000000000000000000000000000000000000000000"
+    }
+    // contract's function asks for the keccak256 hash of the role's text
+    // this is ethers function to compute the keccak256 hash of the text bytes
     try {
       const transaction = await carsContract.revokeRole(bytesRole, address)
       await transaction.wait()
