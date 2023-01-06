@@ -7,6 +7,7 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
   const [artNames, setArtNames] = useState(null)
   const [artPrices, setArtPrices] = useState(null)
   const [artName, setArtName] = useState(null)
+  const [artPrice, setArtPrice] = useState(null)
   const [address, setAddress] = useState(null)
   const [newPrice, setNewPrice] = useState(null)
   const [artsByUser, setArtsByUser] = useState(null)
@@ -51,10 +52,10 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
     }
   }
 
-  async function buyArtOnChain(artName) {
+  async function buyArtOnChain(artName, buyer, artPrice) {
     setError("")
     try {
-      const transaction = await artsContract.buyArtOnChain(artName)
+      const transaction = await artsContract.buyArtOnChain(artName, buyer, artPrice)
       await transaction.wait()
       console.log({ transaction })
       return transaction
@@ -280,14 +281,16 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setArtNames(e.target.value)}
-            placeholder="Name"
-          />
-          <input
-            onChange={(e) => setArtPrices(e.target.value)}
-            placeholder="Price"
-          />
+          <div>
+            <input
+              onChange={(e) => setArtNames(e.target.value)}
+              placeholder="Name"
+            />
+            <input
+              onChange={(e) => setArtPrices(e.target.value)}
+              placeholder="Price"
+            />
+          </div>
           <button onClick={() => putArtsOnSale(artNames, artPrices)}>
             Put Arts On Sale
           </button>
@@ -338,19 +341,35 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setArtName(e.target.value)}
-            placeholder="Art Name"
-          />
-          <button onClick={() => buyArtOnChain(artName)}>
+          <div>
+            <input
+              onChange={(e) => setArtName(e.target.value)}
+              placeholder="Art Name"
+            />
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Buyer"
+            />
+            <input
+              onChange={(e) => setArtPrice(e.target.value)}
+              placeholder="Art Price"
+            />
+          </div>
+          <button onClick={() => buyArtOnChain(artName, address, artPrice)}>
             Buy Art On Chain
           </button>
         </div>
         <span className="description">
+          Users can call this functions directly or vía the Optimizer contract.
+          <br></br>
+          If called directly, buyer must be the caller. If called via Optimizer, there's no need to specify a buyer as the default is the caller.
+          <br></br>
           The art needs to be available and not paused.
           <br></br>
           It's important that the parameter (name) sent with this function is
           equal to Pinata's json name.
+          <br></br>
+          Price must be equal to price in artsOnSale
           <br></br>
           Because the URL created will be "baseURL + artName + .json".
           <br></br>
@@ -363,14 +382,16 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
-          <input
-            onChange={(e) => setArtName(e.target.value)}
-            placeholder="Art Name"
-          />
+          <div>
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+            <input
+              onChange={(e) => setArtName(e.target.value)}
+              placeholder="Art Name"
+            />
+          </div>
           <button onClick={() => buyArtOffChain(artName, address)}>
             Buy Art Off Chain
           </button>
@@ -388,14 +409,16 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setArtName(e.target.value)}
-            placeholder="Art Name"
-          />
-          <input
-            onChange={(e) => setNewPrice(e.target.value)}
-            placeholder="New price"
-          />
+          <div>
+            <input
+              onChange={(e) => setArtName(e.target.value)}
+              placeholder="Art Name"
+            />
+            <input
+              onChange={(e) => setNewPrice(e.target.value)}
+              placeholder="New price"
+            />
+          </div>
           <button onClick={() => changePrice(artName, newPrice)}>
             Change Price
           </button>
@@ -410,10 +433,12 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setArtName(e.target.value)}
-            placeholder="Art name"
-          />
+          <div>
+            <input
+              onChange={(e) => setArtName(e.target.value)}
+              placeholder="Art name"
+            />
+          </div>
           <button onClick={() => pauseSale(artName)}>Pause Sale</button>
         </div>
         <span className="description">
@@ -425,10 +450,12 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setArtName(e.target.value)}
-            placeholder="Art name"
-          />
+          <div>
+            <input
+              onChange={(e) => setArtName(e.target.value)}
+              placeholder="Art name"
+            />
+          </div>
           <button onClick={() => unpauseSale(artName)}>Unpause Sale</button>
         </div>
         <span className="description">
@@ -440,10 +467,12 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
+          <div>
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+          </div>
           <button onClick={() => getArtsByUser(address)}>
             Get Arts By User
           </button>
@@ -458,10 +487,12 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="New Receiver"
-          />
+          <div>
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="New Receiver"
+            />
+          </div>
           <button onClick={() => setReceiver(address)}>Set New Receiver</button>
         </div>
         <span className="description">
@@ -476,10 +507,12 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setNewURL(e.target.value)}
-            placeholder="New Base URI"
-          />
+          <div>
+            <input
+              onChange={(e) => setNewURL(e.target.value)}
+              placeholder="New Base URI"
+            />
+          </div>
           <button onClick={() => setBaseURI(newURL)}>Set New BaseUri</button>
         </div>
         <span className="description">
@@ -515,10 +548,12 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
+          <div>
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+          </div>
           <button onClick={() => toggleMarketplaceAddress(address)}>
             Toggle Marketplace Address
           </button>
@@ -532,11 +567,13 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
+          <div>
+            <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+          </div>
           <button onClick={() => grantRole(role, address)}>Grant Role</button>
         </div>
         <span className="description">
@@ -549,11 +586,13 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
+          <div>
+            <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+          </div>
           <button onClick={() => revokeRole(role, address)}>Revoke Role</button>
         </div>
         <span className="description">
@@ -566,11 +605,13 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
 
       <div style={{ marginBottom: "100px" }} className="module_container">
         <div className="input_container">
-          <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
+          <div>
+            <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+          </div>
           <button onClick={() => renounceRole(role, address)}>
             Renounce Role
           </button>
