@@ -4,19 +4,20 @@ import { ethers } from "ethers";
 import  { useState } from 'react';
 import GraceCars_ABI from './contracts/GraceCars_ABI'
 import GraceArts_ABI from './contracts/GraceArts_ABI'
+import GraceOptimizer_ABI from './contracts/GraceOptimizer_ABI'
 import USDCProxy_ABI from './contracts/USDCProxy_ABI'
 import Web3Modal from 'web3modal';
 
 import CarsComponent from './components/CarsComponent'
 import ArtsComponent from './components/ArtsComponent'
+import OptimizerComponent from './components/OptimizerComponent'
 
 // https://usdcfaucet.com/ --> click en ETH
 
 
 function App() {
 
-
-  const carsBaseUri = "https://gateway.pinata.cloud/ipfs/QmPbjHTxGx6187jnByK33LSxKLtTiYLSgNCRvaYGT2K6Pc/"
+  const carsBaseUri = "https://gateway.pinata.cloud/ipfs/QmdyXFSGq2XFRLhpu3tQn7oAMLQn7HhucLa3LqvZW9MzW6/"
   // in this folder you'll find the following cars:
   // auto_uno.json
   // auto_dos.json
@@ -32,11 +33,13 @@ function App() {
   // arte_cuatro.json
   // arte_cinco.json
   
-  const carsContractAddress = '0xa1d8E5962c2Da159938FB6139F3dF47Cb714138d' // contract in Goerli testnet
-  const artsContractAddress = '0x4B166DBccDf79D2591b34DE47674e0acc6E8df65' // contract in Goerli testnet
+  const optimizerContractAddress = '0x7F1d3622b93B34728148653cF386efAdD91fF722' // contract in Goerli testnet
+  const carsContractAddress = '0xe53e9A2E2C90768381bB121E9aa772fcF8786732' // contract in Goerli testnet
+  const artsContractAddress = '0x22FC1903aD702591DaDfB9e0F84E06922d2A8F40' // contract in Goerli testnet
   const usdcAddress = '0x07865c6E87B9F70255377e024ace6630C1Eaa37F' // goerli usdc proxy contract
 
   const [account, setAccount] = useState(null)
+  const [optimizerContract, setOptimizerContract] = useState(null)
   const [carsContract, setCarsContract] = useState(null)
   const [artsContract, setArtsContract] = useState(null)
   const [USDCContract, setUSDCContract] = useState(null)
@@ -48,6 +51,7 @@ function App() {
   // and sets the chosen address to 'account' variable
   async function requestAccount() {
     const web3Modal = new Web3Modal()
+    let optimizerContractInstance;
     let graceCarsContractInstance;
     let graceArtsContractInstance;
     let USDCContractInstance;
@@ -61,9 +65,12 @@ function App() {
         setAccount(address)
 
         // connect contracts and generate instances
+        optimizerContractInstance = new ethers.Contract(optimizerContractAddress, GraceOptimizer_ABI, signer)
         graceCarsContractInstance = new ethers.Contract(carsContractAddress, GraceCars_ABI, signer)
         graceArtsContractInstance = new ethers.Contract(artsContractAddress, GraceArts_ABI, signer)
         USDCContractInstance = new ethers.Contract(usdcAddress, USDCProxy_ABI, signer)
+
+        setOptimizerContract(optimizerContractInstance)
         setCarsContract(graceCarsContractInstance)
         setArtsContract(graceArtsContractInstance)
         setUSDCContract(USDCContractInstance)
@@ -79,13 +86,21 @@ function App() {
   }
 
   const showCars = () => {
-    templates[0].style.display = "flex";
-    templates[1].style.display = "none"
+    templates[0].style.display = "none";
+    templates[1].style.display = "flex";
+    templates[2].style.display = "none"
   }
 
   const showArt = () => {
     templates[0].style.display = "none";
-    templates[1].style.display = "flex"
+    templates[1].style.display = "none";
+    templates[2].style.display = "flex"
+  }
+
+  const showOptimizer = () => {
+    templates[0].style.display = "flex";
+    templates[1].style.display = "none";
+    templates[2].style.display = "none"
   }
 
   return (
@@ -93,9 +108,18 @@ function App() {
       <header className="App-header">
         <button id='connect_button' onClick={() => requestAccount()}>CONNECT WALLET</button>
         <div className='tabs' style={{"display": "none"}}>
+          <div onClick={() => showOptimizer()} className='tab'>OPTIMIZER CONTRACT</div>
           <div onClick={() => showCars()} className='tab'>CARS CONTRACT</div>
           <div onClick={() => showArt()} className='tab'>ART CONTRACT</div>
         </div>
+
+        <OptimizerComponent
+          USDCContract={USDCContract}
+          optimizerContract={optimizerContract}
+          account={account}
+          provider={provider}
+          optimizerContractAddress={optimizerContractAddress}
+        />
         
         <CarsComponent
           USDCContract={USDCContract}

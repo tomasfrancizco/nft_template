@@ -7,6 +7,7 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
   const [carNames, setCarNames] = useState(null)
   const [carPrices, setCarPrices] = useState(null)
   const [carName, setCarName] = useState(null)
+  const [carPrice, setCarPrice] = useState(null)
   const [address, setAddress] = useState(null)
   const [newPrice, setNewPrice] = useState(null)
   const [carsByUser, setCarsByUser] = useState(null)
@@ -51,10 +52,10 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
     }
   }
 
-  async function buyCarOnChain(carName) {
+  async function buyCarOnChain(carName, buyer, carPrice) {
     setError("")
     try {
-      const transaction = await carsContract.buyCarOnChain(carName)
+      const transaction = await carsContract.buyCarOnChain(carName, buyer, carPrice)
       await transaction.wait()
       console.log({ transaction })
       return transaction
@@ -280,14 +281,16 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setCarNames(e.target.value)}
-            placeholder="Name"
-          />
-          <input
-            onChange={(e) => setCarPrices(e.target.value)}
-            placeholder="Price"
-          />
+          <div>
+            <input
+              onChange={(e) => setCarNames(e.target.value)}
+              placeholder="Name"
+            />
+            <input
+              onChange={(e) => setCarPrices(e.target.value)}
+              placeholder="Price"
+            />
+          </div>
           <button onClick={() => putCarsOnSale(carNames, carPrices)}>
             Put Cars On Sale
           </button>
@@ -338,19 +341,35 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setCarName(e.target.value)}
-            placeholder="Car Name"
-          />
-          <button onClick={() => buyCarOnChain(carName)}>
+          <div>
+            <input
+              onChange={(e) => setCarName(e.target.value)}
+              placeholder="Car Name"
+            />
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Buyer"
+            />
+            <input
+              onChange={(e) => setCarPrice(e.target.value)}
+              placeholder="Car Price"
+            />
+          </div>
+          <button onClick={() => buyCarOnChain(carName, address, carPrice)}>
             Buy Car On Chain
           </button>
         </div>
         <span className="description">
+          Users can call this functions directly or vía the Optimizer contract.
+          <br></br>
+          If called directly, buyer must be the caller. If called via Optimizer, there's no need to specify a buyer as the default is the caller.
+          <br></br>
           The car needs to be available and not paused.
           <br></br>
           It's important that the parameter (name) sent with this function is
           equal to Pinata's json name.
+          <br></br>
+          Price must be equal to price in carsOnSale
           <br></br>
           Because the URL created will be "baseURL + carName + .json".
           <br></br>
@@ -363,14 +382,16 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
-          <input
-            onChange={(e) => setCarName(e.target.value)}
-            placeholder="Car Name"
-          />
+          <div>
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+            <input
+              onChange={(e) => setCarName(e.target.value)}
+              placeholder="Car Name"
+            />
+          </div>
           <button onClick={() => buyCarOffChain(carName, address)}>
             Buy Car Off Chain
           </button>
@@ -388,14 +409,16 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setCarName(e.target.value)}
-            placeholder="Car Name"
-          />
-          <input
-            onChange={(e) => setNewPrice(e.target.value)}
-            placeholder="New price"
-          />
+          <div>
+            <input
+              onChange={(e) => setCarName(e.target.value)}
+              placeholder="Car Name"
+            />
+            <input
+              onChange={(e) => setNewPrice(e.target.value)}
+              placeholder="New price"
+            />
+          </div>
           <button onClick={() => changePrice(carName, newPrice)}>
             Change Price
           </button>
@@ -410,10 +433,12 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setCarName(e.target.value)}
-            placeholder="Car name"
-          />
+          <div>
+            <input
+              onChange={(e) => setCarName(e.target.value)}
+              placeholder="Car name"
+            />
+          </div>
           <button onClick={() => pauseSale(carName)}>Pause Sale</button>
         </div>
         <span className="description">
@@ -425,10 +450,12 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setCarName(e.target.value)}
-            placeholder="Car name"
-          />
+          <div>
+            <input
+              onChange={(e) => setCarName(e.target.value)}
+              placeholder="Car name"
+            />
+          </div>
           <button onClick={() => unpauseSale(carName)}>Unpause Sale</button>
         </div>
         <span className="description">
@@ -440,10 +467,12 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
+          <div>
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+          </div>
           <button onClick={() => getCarsByUser(address)}>
             Get Cars By User
           </button>
@@ -458,10 +487,12 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="New Receiver"
-          />
+          <div>
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="New Receiver"
+            />
+          </div>
           <button onClick={() => setReceiver(address)}>Set New Receiver</button>
         </div>
         <span className="description">
@@ -476,10 +507,12 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setNewURL(e.target.value)}
-            placeholder="New Base URI"
-          />
+          <div>
+            <input
+              onChange={(e) => setNewURL(e.target.value)}
+              placeholder="New Base URI"
+            />
+          </div>
           <button onClick={() => setBaseURI(newURL)}>Set New BaseUri</button>
         </div>
         <span className="description">
@@ -515,10 +548,12 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
+          <div>
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+          </div>
           <button onClick={() => toggleMarketplaceAddress(address)}>
             Toggle Marketplace Address
           </button>
@@ -532,11 +567,13 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
+          <div>
+            <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+          </div>
           <button onClick={() => grantRole(role, address)}>Grant Role</button>
         </div>
         <span className="description">
@@ -549,11 +586,13 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div className="module_container">
         <div className="input_container">
-          <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
+          <div>
+            <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+          </div>
           <button onClick={() => revokeRole(role, address)}>Revoke Role</button>
         </div>
         <span className="description">
@@ -566,11 +605,13 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
 
       <div style={{ marginBottom: "100px" }} className="module_container">
         <div className="input_container">
-          <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
-          <input
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Address"
-          />
+          <div>
+            <input onChange={(e) => setRole(e.target.value)} placeholder="Role" />
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+            />
+          </div>
           <button onClick={() => renounceRole(role, address)}>
             Renounce Role
           </button>

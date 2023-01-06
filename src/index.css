@@ -91,6 +91,13 @@ span {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+}
+
+.input_container > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .module_container button {

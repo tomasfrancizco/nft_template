@@ -1,0 +1,379 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_graceCars",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_graceArts",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_usdcToken",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_balanceReceiver",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "newAddress",
+				"type": "address"
+			}
+		],
+		"name": "NewArtsAddress",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "newReceiver",
+				"type": "address"
+			}
+		],
+		"name": "NewBalanceReceiver",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "newAddress",
+				"type": "address"
+			}
+		],
+		"name": "NewCarsAddress",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "NewOwner",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "USDC_Token",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "balanceReceiver",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_artName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_artPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "buyArt",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_artName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_artPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_merchPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "buyArtMerch",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_carName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_carPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "buyCar",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_carName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_artName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_artPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_carPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "buyCarArt",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_carName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_artName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_carPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_artPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_merchPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "buyCarArtMerch",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_carName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_carPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_merchPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "buyCarMerch",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_merchPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "buyMerch",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "graceArts",
+		"outputs": [
+			{
+				"internalType": "contract IGraceArts",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "graceCars",
+		"outputs": [
+			{
+				"internalType": "contract IGraceCars",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_newAddress",
+				"type": "address"
+			}
+		],
+		"name": "setArtsAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_newAddress",
+				"type": "address"
+			}
+		],
+		"name": "setCarsAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_newReceiver",
+				"type": "address"
+			}
+		],
+		"name": "setReceiver",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]

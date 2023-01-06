@@ -189,6 +189,19 @@
 		"inputs": [
 			{
 				"indexed": false,
+				"internalType": "address",
+				"name": "newOptimizer",
+				"type": "address"
+			}
+		],
+		"name": "NewOptimizerContract",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
 				"internalType": "string",
 				"name": "carName",
 				"type": "string"
@@ -479,6 +492,16 @@
 				"internalType": "string",
 				"name": "_carName",
 				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "_buyer",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_carPrice",
+				"type": "uint256"
 			}
 		],
 		"name": "buyCarOnChain",
@@ -802,6 +825,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "optimizerContract",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -965,6 +1001,19 @@
 			}
 		],
 		"name": "setBaseURI",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_newOptimizer",
+				"type": "address"
+			}
+		],
+		"name": "setOptimizer",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
