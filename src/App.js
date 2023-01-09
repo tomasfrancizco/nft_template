@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { ethers } from "ethers";
-import  { useState } from 'react';
+import  { useState, useEffect } from 'react';
 import GraceCars_ABI from './contracts/GraceCars_ABI'
 import GraceArts_ABI from './contracts/GraceArts_ABI'
 import GraceOptimizer_ABI from './contracts/GraceOptimizer_ABI'
@@ -38,6 +38,13 @@ function App() {
   const artsContractAddress = '0x22FC1903aD702591DaDfB9e0F84E06922d2A8F40' // contract in Goerli testnet
   const usdcAddress = '0x07865c6E87B9F70255377e024ace6630C1Eaa37F' // goerli usdc proxy contract
 
+  const validChainId = "0x5" // "0x1" for Mainnet
+  const chainName = "Goerli";
+  const rpcUrl = "https://rpc.ankr.com/eth_goerli"
+  const currency = "ETH";
+  const explorer = "https://goerli.etherscan.io";
+
+  const [chainId, setChainId] = useState(null)
   const [account, setAccount] = useState(null)
   const [optimizerContract, setOptimizerContract] = useState(null)
   const [carsContract, setCarsContract] = useState(null)
@@ -74,16 +81,92 @@ function App() {
         setCarsContract(graceCarsContractInstance)
         setArtsContract(graceArtsContractInstance)
         setUSDCContract(USDCContractInstance)
-        document.getElementById('connect_button').style.display = "none"
-        document.getElementsByClassName('tabs')[0].style.display = "flex"
-        templates[0].style.display = "flex"
       } catch(e) {
         console.error({ e })
       }
 
     if (!provider) return
-    else return [provider, graceCarsContractInstance, graceArtsContractInstance, USDCContractInstance]
+    const chain = (await provider.getNetwork()).chainId;
+    setChainId(decToHex(chain));
+    return [provider, graceCarsContractInstance, graceArtsContractInstance, USDCContractInstance]
   }
+  
+  useEffect(() => {
+    if(window && window.ethereum !== undefined){  
+      window.ethereum.on('chainChanged', newChain => {
+        setChainId(decToHex(newChain))
+        // if(chainId !== validChainId){
+        //   switchOrCreateNetwork(validChainId, chainName, rpcUrl, currency, explorer)
+        // }
+      })
+    }
+  }, [])
+
+  function decToHex(number) {
+    return `0x${parseInt(number).toString(16)}`;
+  }
+
+  async function switchOrCreateNetwork(
+    chainIdHex,
+    chainName,
+    rpcUrl,
+    currency,
+    explorer
+  ) {
+    try {
+      // asks user to change chain
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: chainIdHex }],
+      });
+    } catch (error) {
+      if (error.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: chainIdHex,
+                chainName: chainName,
+                rpcUrls: [rpcUrl],
+                nativeCurrency: {
+                  name: currency,
+                  symbol: currency,
+                  decimals: 18,
+                },
+                blockExplorerUrls: [explorer],
+              },
+            ],
+          });
+        } catch (e) {
+          console.error(e.message);
+        }  
+      } else if(error.code === 4001) { // error code 4001 is 'user rejected the request'
+        return "userRejected"
+      }
+    }
+  }
+
+  const connectToMetamask = () => {
+    requestAccount()
+      .then(() => {
+        switchOrCreateNetwork(validChainId, chainName, rpcUrl, currency, explorer)
+        .then((res) => {
+          if(res !== 'userRejected'){
+            document.getElementById('connect_button').style.display = "none"
+            document.getElementsByClassName('tabs')[0].style.display = "flex"
+            templates[0].style.display = "flex"
+          }
+        })
+        .catch(e => {
+          console.error({ e })
+        })
+      })
+      .catch((e) => {
+        console.error({ e })
+      })
+  }
+  
 
   const showCars = () => {
     templates[0].style.display = "none";
@@ -106,7 +189,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <button id='connect_button' onClick={() => requestAccount()}>CONNECT WALLET</button>
+        <button id='connect_button' onClick={() => connectToMetamask()}>CONNECT WALLET</button>
         <div className='tabs' style={{"display": "none"}}>
           <div onClick={() => showOptimizer()} className='tab'>OPTIMIZER CONTRACT</div>
           <div onClick={() => showCars()} className='tab'>CARS CONTRACT</div>

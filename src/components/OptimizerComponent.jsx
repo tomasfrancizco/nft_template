@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ethers } from "ethers";
 
-const OptimizerComponent = ({USDCContract, optimizerContract, account, provider, optimizerContractAddress}) => {
+const OptimizerComponent = ({USDCContract, optimizerContract, account, provider, optimizerContractAddress }) => {
 
   const [error, setError] = useState("")
   const [carName, setCarName] = useState(null)
