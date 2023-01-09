@@ -202,6 +202,12 @@ function App() {
           account={account}
           provider={provider}
           optimizerContractAddress={optimizerContractAddress}
+          switchOrCreateNetwork={switchOrCreateNetwork}
+          validChainId={validChainId}
+          chainName={chainName}
+          rpcUrl={rpcUrl}
+          currency={currency}
+          explorer={explorer}
         />
         
         <CarsComponent

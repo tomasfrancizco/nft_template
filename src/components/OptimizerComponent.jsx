@@ -1,7 +1,19 @@
 import { useState } from 'react'
 import { ethers } from "ethers";
 
-const OptimizerComponent = ({USDCContract, optimizerContract, account, provider, optimizerContractAddress }) => {
+const OptimizerComponent = (props) => {
+  const { USDCContract,
+          optimizerContract,
+          account,
+          provider,
+          optimizerContractAddress,
+          switchOrCreateNetwork,
+          validChainId,
+          chainName,
+          rpcUrl,
+          currency,
+          explorer
+          } = props;
 
   const [error, setError] = useState("")
   const [carName, setCarName] = useState(null)
@@ -10,22 +22,31 @@ const OptimizerComponent = ({USDCContract, optimizerContract, account, provider,
   const [artPrice, setArtPrice] = useState(null)
   const [merchPrice, setMerchPrice] = useState(null)
 
+  // this function first asks the user to change network, if the user rejects the tx it doesn't go through
   async function approveUsdc() {
     setError("")
-    try {
-      const params = [{
-        from: account,
-        to: USDCContract.address,
-        data: `0x095ea7b3000000000000000000000000${optimizerContractAddress.substring(2)}ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`
-      }];
-      // data is calling approve function with these parameters, allowing Grace's contract to manage user's USDCs:
-      // approve(USDCContract.address, 2^256);
-      const transactionHash = await provider.send('eth_sendTransaction', params)
-      console.log('transactionHash is ' + transactionHash)
-    } catch (e) {
-      console.error({ e })
-      setError(e.reason)
-    }
+    switchOrCreateNetwork(validChainId,chainName,rpcUrl,currency,explorer)
+      .then( async (res) => {
+        if(res !== 'userRejected'){
+          try {
+            const params = [{
+              from: account,
+              to: USDCContract.address,
+              data: `0x095ea7b3000000000000000000000000${optimizerContractAddress.substring(2)}ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`
+            }];
+            // data is calling approve function with these parameters, allowing Grace's contract to manage user's USDCs:
+            // approve(USDCContract.address, 2^256);
+            const transactionHash = await provider.send('eth_sendTransaction', params)
+            console.log('transactionHash is ' + transactionHash)
+          } catch (e) {
+            console.error({ e })
+            setError(e.reason)
+          }
+        }
+      })
+      .catch(e => {
+        console.error({ e })
+      })
   }
 
   async function buyCar(carName, carPrice) {
@@ -142,6 +163,9 @@ const OptimizerComponent = ({USDCContract, optimizerContract, account, provider,
           <button onClick={() => approveUsdc()}>Approve USDC contract</button>
         </div>
         <span className="description">
+          THIS FUNCTION FIRST ASKS THE USER TO CHANGE NETWORK IF IT'S IN ANOTHER THAN GOERLI.
+          IF USER REJECTS THE CHANGE, THE TX DOESN'T GO THROUGH.
+          <br></br>
           This is a function that buyers will need to call before calling any other 'buy' function.
           <br></br>
           It's a standard ERC20 (USDCs standard) function that allows Grace's
