@@ -95,9 +95,7 @@ function App() {
     if(window && window.ethereum !== undefined){  
       window.ethereum.on('chainChanged', newChain => {
         setChainId(decToHex(newChain))
-        // if(chainId !== validChainId){
-        //   switchOrCreateNetwork(validChainId, chainName, rpcUrl, currency, explorer)
-        // }
+        requestAccount()
       })
     }
   }, [])
