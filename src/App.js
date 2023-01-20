@@ -16,9 +16,9 @@ import OptimizerComponent from './components/OptimizerComponent'
 
 function App() {
   
-  const optimizerContractAddress = '0x7680556dF5681f5393b077bBc4aF241DdcC64B02' // contract in Goerli testnet
-  const carsContractAddress = '0x13b4f2E337317a434Cb49aFdF376B7b2369dD50E' // contract in Goerli testnet
-  const artsContractAddress = '0x856475B0e5d7Ca0a8a25Bf747fB00a8805e02a4A' // contract in Goerli testnet
+  const optimizerContractAddress = '0x5B1B022b193b48AE927ea372bE68E09ac4B55AC2' // contract in Goerli testnet
+  const carsContractAddress = '0x892bBE84a148B9854c31D0CB44cb7BB1d0227735' // contract in Goerli testnet
+  const artsContractAddress = '0x08B445a49a2aB619BeC9c26808aeeb2168A95267' // contract in Goerli testnet
   const usdcAddress = '0x07865c6E87B9F70255377e024ace6630C1Eaa37F' // goerli usdc proxy contract
 
   const validChainId = "0x5" // "0x1" for Mainnet
