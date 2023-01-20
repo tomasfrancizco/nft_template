@@ -11,9 +11,10 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
   const [address, setAddress] = useState(null)
   const [newPrice, setNewPrice] = useState(null)
   const [carsByUser, setCarsByUser] = useState(null)
-  const [newURL, setNewURL] = useState(null)
+  const [newURI, setNewURI] = useState(null)
   const [marketplacePermission, setMarketplacePermission] = useState(null)
   const [role, setRole] = useState(null)
+  const [carURIs, setCarURIs] = useState(null)
 
   async function approveUsdc() {
     setError("")
@@ -37,12 +38,13 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
   // in this template, both need to be entered separated by commas with no spaces.
   // e.g.: car_one,car_two,car_three // 100000000000,200000000000,300000000000
   // this allows the NFTs to be bought later on
-  async function putCarsOnSale(carNames, carPrices) {
+  async function putCarsOnSale(carNames, carPrices, carURIs) {
     setError("")
     try {
       const namesArr = carNames.split(",")
       const pricesArr = carPrices.split(",")
-      const transaction = await carsContract.putCarsOnSale(namesArr, pricesArr)
+      const urisArr = carURIs.split(",")
+      const transaction = await carsContract.putCarsOnSale(namesArr, pricesArr, urisArr)
       await transaction.wait()
       console.log({ transaction }) // the wait() method can be used only for write functions (not read)
       return transaction
@@ -150,10 +152,10 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
     }
   }
 
-  async function setBaseURI(address) {
+  async function changeURI(carName, newUri) {
     setError("")
     try {
-      const transaction = await carsContract.setBaseURI(address)
+      const transaction = await carsContract.changeURI(carName, newUri)
       await transaction.wait()
       console.log({ transaction })
       return transaction
@@ -284,14 +286,18 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
           <div>
             <input
               onChange={(e) => setCarNames(e.target.value)}
-              placeholder="Name"
+              placeholder="Names"
             />
             <input
               onChange={(e) => setCarPrices(e.target.value)}
-              placeholder="Price"
+              placeholder="Prices"
+            />
+            <input
+              onChange={(e) => setCarURIs(e.target.value)}
+              placeholder="URIs"
             />
           </div>
-          <button onClick={() => putCarsOnSale(carNames, carPrices)}>
+          <button onClick={() => putCarsOnSale(carNames, carPrices, carURIs)}>
             Put Cars On Sale
           </button>
         </div>
@@ -365,9 +371,6 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
           If called directly, buyer must be the caller. If called via Optimizer, there's no need to specify a buyer as the default is the caller.
           <br></br>
           The car needs to be available and not paused.
-          <br></br>
-          It's important that the parameter (name) sent with this function is
-          equal to Pinata's json name.
           <br></br>
           Price must be equal to price in carsOnSale
           <br></br>
@@ -508,21 +511,21 @@ const CarsComponent = ({USDCContract, carsContract, account, provider, carsContr
       <div className="module_container">
         <div className="input_container">
           <div>
+          <input
+              onChange={(e) => setCarName(e.target.value)}
+              placeholder="Car Name"
+            />
             <input
-              onChange={(e) => setNewURL(e.target.value)}
-              placeholder="New Base URI"
+              onChange={(e) => setNewURI(e.target.value)}
+              placeholder="New URI"
             />
           </div>
-          <button onClick={() => setBaseURI(newURL)}>Set New BaseUri</button>
+          <button onClick={() => changeURI(carName, newURI)}>Set New Uri</button>
         </div>
         <span className="description">
-          Only DEFAULT_ADMIN_ROLE can change baseUri.
+          Only DEFAULT_ADMIN_ROLE can change an item's URI.
           <br></br>
-          This function only applies to new NFTS. When minting them, the URL
-          created is "baseUri + carName + .json".
-          <br></br>
-          E.g.:
-          https://gateway.pinata.cloud/ipfs/QmZ7aDrUAjuouNkSoMNoVaChJWuMwTmrT846vypobH2dy6/car_one.json
+          This function can only be executed for non minted NFTs.
         </span>
       </div>
 

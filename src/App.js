@@ -14,35 +14,18 @@ import OptimizerComponent from './components/OptimizerComponent'
 
 // https://usdcfaucet.com/ --> click en ETH
 
-
 function App() {
-
-  const carsBaseUri = "https://gateway.pinata.cloud/ipfs/QmdyXFSGq2XFRLhpu3tQn7oAMLQn7HhucLa3LqvZW9MzW6/"
-  // in this folder you'll find the following cars:
-  // auto_uno.json
-  // auto_dos.json
-  // auto_tres.json
-  // auto_cuatro.json
-  // auto_cinco.json
-
-  const artsBaseUri = "https://gateway.pinata.cloud/ipfs/QmXMNG6R7b5pkhXDSjSA8Qq2UjcKUaSusPHtDcx2DP7kcu/"
-  // in this folder you'll find the following pieces of art:
-  // arte_uno.json
-  // arte_dos.json
-  // arte_tres.json
-  // arte_cuatro.json
-  // arte_cinco.json
   
-  const optimizerContractAddress = '0x7F1d3622b93B34728148653cF386efAdD91fF722' // contract in Goerli testnet
-  const carsContractAddress = '0xe53e9A2E2C90768381bB121E9aa772fcF8786732' // contract in Goerli testnet
-  const artsContractAddress = '0x22FC1903aD702591DaDfB9e0F84E06922d2A8F40' // contract in Goerli testnet
+  const optimizerContractAddress = '0x7680556dF5681f5393b077bBc4aF241DdcC64B02' // contract in Goerli testnet
+  const carsContractAddress = '0x13b4f2E337317a434Cb49aFdF376B7b2369dD50E' // contract in Goerli testnet
+  const artsContractAddress = '0x856475B0e5d7Ca0a8a25Bf747fB00a8805e02a4A' // contract in Goerli testnet
   const usdcAddress = '0x07865c6E87B9F70255377e024ace6630C1Eaa37F' // goerli usdc proxy contract
 
   const validChainId = "0x5" // "0x1" for Mainnet
-  const chainName = "Goerli";
-  const rpcUrl = "https://rpc.ankr.com/eth_goerli"
+  const chainName = "Goerli"; // "Ethereum Mainnet" for Mainnet
+  const rpcUrl = "https://rpc.ankr.com/eth_goerli" // "https://mainnet.infura.io/v3/" for Mainnet
   const currency = "ETH";
-  const explorer = "https://goerli.etherscan.io";
+  const explorer = "https://goerli.etherscan.io"; // "https://etherscan.io" for Mainnet
 
   const [chainId, setChainId] = useState(null)
   const [account, setAccount] = useState(null)

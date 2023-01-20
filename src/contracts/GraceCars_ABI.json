@@ -7,11 +7,6 @@
 				"type": "address"
 			},
 			{
-				"internalType": "string",
-				"name": "_baseUri",
-				"type": "string"
-			},
-			{
 				"internalType": "address",
 				"name": "_balanceReceiver",
 				"type": "address"
@@ -195,6 +190,25 @@
 			}
 		],
 		"name": "NewOptimizerContract",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "carName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "newUri",
+				"type": "string"
+			}
+		],
+		"name": "NewUri",
 		"type": "event"
 	},
 	{
@@ -443,19 +457,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "baseUri",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -536,6 +537,11 @@
 			},
 			{
 				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
 				"name": "timestamp",
 				"type": "uint256"
 			}
@@ -571,6 +577,11 @@
 			{
 				"internalType": "uint256",
 				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
 				"type": "uint256"
 			},
 			{
@@ -611,6 +622,16 @@
 				"internalType": "bool",
 				"name": "sold",
 				"type": "bool"
+			},
+			{
+				"internalType": "string",
+				"name": "uri",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "uploaded",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -630,6 +651,24 @@
 			}
 		],
 		"name": "changePrice",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_carName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_newUri",
+				"type": "string"
+			}
+		],
+		"name": "changeUri",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -678,6 +717,11 @@
 					{
 						"internalType": "uint256",
 						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
 						"type": "uint256"
 					},
 					{
@@ -880,6 +924,11 @@
 				"internalType": "uint256[]",
 				"name": "_prices",
 				"type": "uint256[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "_uris",
+				"type": "string[]"
 			}
 		],
 		"name": "putCarsOnSale",
@@ -988,19 +1037,6 @@
 			}
 		],
 		"name": "setApprovalForAll",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "__baseURI",
-				"type": "string"
-			}
-		],
-		"name": "setBaseURI",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

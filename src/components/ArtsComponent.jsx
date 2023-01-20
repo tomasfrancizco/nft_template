@@ -11,9 +11,10 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
   const [address, setAddress] = useState(null)
   const [newPrice, setNewPrice] = useState(null)
   const [artsByUser, setArtsByUser] = useState(null)
-  const [newURL, setNewURL] = useState(null)
+  const [newURI, setNewURI] = useState(null)
   const [marketplacePermission, setMarketplacePermission] = useState(null)
   const [role, setRole] = useState(null)
+  const [artURIs, setArtURIs] = useState(null)
 
   async function approveUsdc() {
     setError("")
@@ -37,12 +38,13 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
   // in this template, both need to be entered separated by commas with no spaces.
   // e.g.: art_one,art_two,art_three // 100000000000,200000000000,300000000000
   // this allows the NFTs to be bought later on
-  async function putArtsOnSale(artNames, artPrices) {
+  async function putArtsOnSale(artNames, artPrices, artURIs) {
     setError("")
     try {
       const namesArr = artNames.split(",")
       const pricesArr = artPrices.split(",")
-      const transaction = await artsContract.putArtsOnSale(namesArr, pricesArr)
+      const urisArr = artURIs.splir(",")
+      const transaction = await artsContract.putArtsOnSale(namesArr, pricesArr, urisArr)
       await transaction.wait() // the wait() method can be used only for write functions (not read)
       console.log({ transaction })
       return transaction
@@ -150,10 +152,10 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
     }
   }
 
-  async function setBaseURI(address) {
+  async function changeURI(artName, newURI) {
     setError("")
     try {
-      const transaction = await artsContract.setBaseURI(address)
+      const transaction = await artsContract.changeURI(artName, newURI)
       await transaction.wait()
       console.log({ transaction })
       return transaction
@@ -290,8 +292,12 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
               onChange={(e) => setArtPrices(e.target.value)}
               placeholder="Price"
             />
+            <input
+              onChange={(e) => setArtURIs(e.target.value)}
+              placeholder="URIs"
+            />
           </div>
-          <button onClick={() => putArtsOnSale(artNames, artPrices)}>
+          <button onClick={() => putArtsOnSale(artNames, artPrices, artURIs)}>
             Put Arts On Sale
           </button>
         </div>
@@ -368,10 +374,6 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
           <br></br>
           It's important that the parameter (name) sent with this function is
           equal to Pinata's json name.
-          <br></br>
-          Price must be equal to price in artsOnSale
-          <br></br>
-          Because the URL created will be "baseURL + artName + .json".
           <br></br>
           This function will transfer the art's price from the user to the
           receiver account.
@@ -508,21 +510,21 @@ const ArtsComponent = ({USDCContract, artsContract, account, provider, artsContr
       <div className="module_container">
         <div className="input_container">
           <div>
+          <input
+              onChange={(e) => setArtName(e.target.value)}
+              placeholder="Art Name"
+            />
             <input
-              onChange={(e) => setNewURL(e.target.value)}
-              placeholder="New Base URI"
+              onChange={(e) => setNewURI(e.target.value)}
+              placeholder="New URI"
             />
           </div>
-          <button onClick={() => setBaseURI(newURL)}>Set New BaseUri</button>
+          <button onClick={() => changeURI(artName, newURI)}>Set New URI</button>
         </div>
         <span className="description">
-          Only DEFAULT_ADMIN_ROLE can change baseUri.
+          Only DEFAULT_ADMIN_ROLE can change an item's URI.
           <br></br>
-          This function only applies to new NFTS. When minting them, the URL
-          created is "baseUri + artName + .json".
-          <br></br>
-          E.g.:
-          https://gateway.pinata.cloud/ipfs/QmZ7aDrUAjuouNkSoMNoVaChJWuMwTmrT846vypobH2dy6/art_one.json
+          This function can only be executed for non minted NFTs.
         </span>
       </div>
 
